@@ -9,16 +9,13 @@ if "area_proj" in fields:
         "Attribute 'area_proj' already exists"
     )
 
-fields.append(QgsField("area_proj", PyQt5.QtCore.QVariant.Double))
+fields.append(qgis.core.QgsField("area_proj", PyQt5.QtCore.QVariant.Double))
 
 dest_layer = qgis.core.QgsMemoryProviderUtils.createMemoryLayer(
-    "layer_with_area",
-    fields,
-    source_layer.wkbType(),
-    source_layer.crs()
+    "layer_with_area", fields, source_layer.wkbType(), source_layer.crs()
 )
 
-with edit(dest_layer):
+with qgis.core.edit(dest_layer):
     for feature in source_layer.getFeatures():
         newFeature = qgis.core.QgsFeature(feature)
         newFeature.setFields(fields)
@@ -28,4 +25,4 @@ with edit(dest_layer):
         dest_layer.addFeature(newFeature)
 
 qgis.core.QgsProject.instance().addMapLayer(dest_layer)
-print("generated")
+print("Generated")
